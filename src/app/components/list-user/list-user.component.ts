@@ -1,4 +1,7 @@
 import { Component, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
+import { ApiService } from 'src/app/core/api.service';
+import { UserDTO } from 'src/app/core/model/userDTO';
 
 @Component({
   selector: 'app-list-user',
@@ -7,9 +10,23 @@ import { Component, OnInit } from '@angular/core';
 })
 export class ListUserComponent implements OnInit {
 
-  constructor() { }
+  users: UserDTO[];
+
+  constructor(private router: Router,
+    private apiService: ApiService) { }
 
   ngOnInit(): void {
+    if (!this.apiService.isAuthenticated()) {
+      this.router.navigate(['login']);
+    }
+    this.apiService.getUsers().subscribe(users => {
+      this.users = users;
+    }, error => {
+      console.log('Error ao pegar a lista de usuário', error);
+    })
   }
 
+  getRole(user:UserDTO){
+    return this.apiService.getRole(user.roles);
+  }
 }

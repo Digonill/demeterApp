@@ -12,6 +12,11 @@ import { RegisterUserComponent } from './components/register-user/register-user.
 import { ResendRegistrationTokenComponent } from './components/resend-registration-token/resend-registration-token.component';
 import { ListUserComponent } from './components/list-user/list-user.component';
 import { WelcomeComponent } from './components/welcome/welcome.component';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { ReactiveFormsModule, FormsModule } from '@angular/forms';
+import { ApiService } from './core/api.service';
+import { InterceptorService } from './core/interceptor.service';
+import { AuthGuard } from './core/guards/auth.guard';
 
 
 @NgModule({
@@ -27,11 +32,22 @@ import { WelcomeComponent } from './components/welcome/welcome.component';
     WelcomeComponent
   ],
   imports: [
-    MDBBootstrapModule.forRoot(),
     BrowserModule,
-    AppRoutingModule
+    AppRoutingModule,
+    MDBBootstrapModule.forRoot(),
+    HttpClientModule,
+    ReactiveFormsModule,
+    FormsModule
   ],
-  providers: [],
+  providers: [
+    ApiService,
+    AuthGuard,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: InterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
