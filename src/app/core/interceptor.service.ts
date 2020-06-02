@@ -45,6 +45,7 @@ export class InterceptorService implements HttpInterceptor {
               console.log('error 403');
               return this.getAccessToken(request, next);
             case 0:
+              localStorage.removeItem('accessToken');
               console.log('error 0 : ', error);
               return this.getAccessToken(request, next);
             case 401:
@@ -75,7 +76,7 @@ export class InterceptorService implements HttpInterceptor {
   }
   handleErrorGeneral(error) {
     if (error.status === 409 || error.status === 404) {
-      console.log(error.status);
+      console.log(error);
       return EmptyObservable.create();
     }
     return EmptyObservable.create();

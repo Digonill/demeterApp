@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ApiService } from 'src/app/core/api.service';
 import { Observable } from 'rxjs';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-header',
@@ -9,7 +10,7 @@ import { Observable } from 'rxjs';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private apiService: ApiService) { }
+  constructor(private apiService: ApiService, private router: Router) { }
 
   ngOnInit(): void {
   }
@@ -18,6 +19,16 @@ export class HeaderComponent implements OnInit {
     return this.apiService.isAuthenticated();
   }
 
-  logout(){}
+  logout() {
+    this.apiService.logout().subscribe(() => {
+      this.clearLocalStore();
+      this.router.navigate(['login']);
+    }, error => {
+      console.log(' Erro ao realizar logout! ', error);
+    })
+  }
 
+  clearLocalStore() { 
+    localStorage.clear();
+  }
 }

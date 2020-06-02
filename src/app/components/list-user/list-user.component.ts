@@ -12,8 +12,7 @@ export class ListUserComponent implements OnInit {
 
   users: UserDTO[];
 
-  constructor(private router: Router,
-    private apiService: ApiService) { }
+  constructor(private router: Router, private apiService: ApiService) { }
 
   ngOnInit(): void {
     if (!this.apiService.isAuthenticated()) {
@@ -24,9 +23,16 @@ export class ListUserComponent implements OnInit {
     }, error => {
       console.log('Error ao pegar a lista de usuário', error);
     })
-  }
+  }  
 
-  getRole(user:UserDTO){
+  getRole(user: UserDTO) {
     return this.apiService.getRole(user.roles);
+  }
+  deleteUser(user: UserDTO): void {
+    this.apiService.deleteUser(user.id).subscribe(() => {
+      this.users = this.users.filter(u => u.id !== user.id);
+    }, error => {
+      console.log('Error ao deletar usuário! ', error);
+    })
   }
 }

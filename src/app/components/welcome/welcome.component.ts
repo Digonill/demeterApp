@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { userDTO } from 'src/app/core/model/userDTO';
+import { UserDTO } from 'src/app/core/model/userDTO';
 
 @Component({
   selector: 'app-welcome',
@@ -8,7 +8,7 @@ import { userDTO } from 'src/app/core/model/userDTO';
 })
 export class WelcomeComponent implements OnInit {
 
-  public user = new userDTO();
+  public user = new UserDTO();
   
   constructor() { }
 
